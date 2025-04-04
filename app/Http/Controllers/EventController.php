@@ -50,15 +50,16 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'event_time' => 'required|date',
             'email' => 'nullable|email',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $data['event_id'] = 'EVT-' . strtoupper(Str::random(6));
-        $data['user_id'] = auth()->id() ?? 1; // Use 1 for guest if not logged in
 
         Event::create($data);
 
         return response()->json(['message' => 'Event synced successfully.'], 201);
     }
+
 
 
     public function edit($id)

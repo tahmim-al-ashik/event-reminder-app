@@ -37,6 +37,8 @@
     </div>
 
     <script>
+        const userId = {{ auth()->id() ?? 'null' }}; // pass to JS
+
         document.getElementById("eventForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -45,6 +47,7 @@
                 description: document.getElementById("description").value,
                 event_time: document.getElementById("event_time").value,
                 email: document.getElementById("email").value,
+                user_id: userId,
             };
 
             const statusEl = document.getElementById("eventStatus");
@@ -58,7 +61,8 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(() => {
+                    .then(response => response.json())
+                    .then(res => {
                         statusEl.className = "alert alert-success mt-4 text-center";
                         statusEl.textContent = "✅ Event created and email reminder will be sent!";
                         statusEl.classList.remove("d-none");
@@ -77,15 +81,5 @@
                 document.getElementById("eventForm").reset();
             }
         });
-
-
-        fetch('/api/events/sync', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify(data)
-        })
     </script>
 @endsection

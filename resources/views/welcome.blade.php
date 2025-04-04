@@ -8,8 +8,14 @@
         <p class="lead">Your simple, smart, and offline-ready event reminder system.</p>
         <p class="mb-4">Plan your tasks, set event reminders, and never forget what matters.</p>
 
-        <a href="/login" class="btn btn-primary btn-lg me-2">Login</a>
-        <a href="/register" class="btn btn-outline-light btn-lg">Register</a>
+        @guest
+            <a href="/login" class="btn btn-primary btn-lg me-2">Login</a>
+            <a href="/register" class="btn btn-outline-light btn-lg">Register</a>
+        @endguest
+
+        @auth
+            <a href="{{ route('events.index') }}" class="btn btn-success btn-lg">Go to Dashboard</a>
+        @endauth
 
         <hr class="my-5">
 

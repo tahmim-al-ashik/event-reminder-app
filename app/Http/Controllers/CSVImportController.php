@@ -32,6 +32,7 @@ class CSVImportController extends Controller
                 'description' => $row['description'] ?? '',
                 'event_time' => $row['event_time'] ?? now(),
                 'email' => $row['email'] ?? null,
+                'user_id' => auth()->id(),
             ]);
         }
 
@@ -54,8 +55,8 @@ class CSVImportController extends Controller
             // Add CSV headers
             fputcsv($handle, ['event_id', 'title', 'description', 'event_time', 'email']);
 
-            // Add rows
-            foreach (Event::all() as $event) {
+            // Export only current user's events
+            foreach (Event::where('user_id', auth()->id())->get() as $event) {
                 fputcsv($handle, [
                     $event->event_id,
                     $event->title,
